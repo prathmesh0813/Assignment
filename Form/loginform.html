@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Survey Form</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+      }
+
+      .container {
+        max-width: 400px;
+        margin: 0 auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+
+      label,
+      input,
+      select {
+        display: block;
+        margin-bottom: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <form id="surveyForm" onsubmit="return false;">
+        <label for="firstName">First Name:</label>
+        <input type="text" id="firstName" required />
+
+        <label for="lastName">Last Name:</label>
+        <input type="text" id="lastName" required />
+
+        <label for="dob">Date of Birth:</label>
+        <input type="date" id="dob" required />
+
+        <label for="country">Country:</label>
+        <select id="country" required>
+          <option value="USA">USA</option>
+          <option value="Canada">Canada</option>
+          <option value="UK">UK</option>
+          <option value="India">India</option>
+
+          <!-- Add more countries as needed -->
+        </select>
+
+        <label>Gender:</label>
+        <input type="checkbox" id="male" /> <label for="male">Male</label>
+        <input type="checkbox" id="female" />
+        <label for="female">Female</label> <input type="checkbox" id="other" />
+        <label for="other">Other</label>
+
+        <label for="profession">Profession:</label>
+        <input type="text" id="profession" required />
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" required />
+
+        <label for="mobile">Mobile Number:</label>
+
+        <input type="tel" id="mobile" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" />
+
+        <button type="submit" onclick="submitForm()">Submit</button>
+        <button type="button" onclick="resetForm()">Reset</button>
+      </form>
+    </div>
+
+    <div id="popup" style="display: none">
+      <h2>Survey Submission Details</h2>
+      <div id="popupContent"></div>
+      <button onclick="closePopup()">Close</button>
+    </div>
+
+    <script>
+      function submitForm() {
+        const firstName = document.getElementById("firstName").value;
+        const lastName = document.getElementById("lastName").value;
+        const dob = document.getElementById("dob").value;
+        const country = document.getElementById("country").value;
+        const gender = document.querySelectorAll(
+          'input[type="checkbox"]:checked'
+        );
+        const profession = document.getElementById("profession").value;
+        const email = document.getElementById("email").value;
+        const mobile = document.getElementById("mobile").value;
+
+        if (gender.length === 0) {
+          alert("Please select a gender.");
+          return;
+        }
+
+        const genderValues = Array.from(gender).map(
+          (checkbox) => checkbox.nextElementSibling.textContent
+        );
+
+        const popupContent = `
+        <p><strong>First Name:</strong> ${firstName}</p>
+        <p><strong>Last Name:</strong> ${lastName}</p>
+        <p><strong>Date of Birth:</strong> ${dob}</p>
+        <p><strong>Country:</strong> ${country}</p>
+        <p><strong>Gender:</strong> ${genderValues.join(", ")}</p>
+        <p><strong>Profession:</strong> ${profession}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Mobile Number:</strong> ${mobile}</p>
+      `;
+
+        document.getElementById("popupContent").innerHTML = popupContent;
+        document.getElementById("popup").style.display = "block";
+      }
+
+      function closePopup() {
+        document.getElementById("popup").style.display = "none";
+        resetForm();
+      }
+
+      function resetForm() {
+        document.getElementById("surveyForm").reset();
+      }
+    </script>
+  </body>
+</html>
